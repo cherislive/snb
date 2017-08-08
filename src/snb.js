@@ -25,13 +25,11 @@
     root['snb'] = factory(root, document, root.jQuery, undefined)
   }
 })(typeof window !== 'undefined' ? window : this, function (window, document, $, undefined) {  
-  var _winWidth   = $(window).width(),
-      _winHeight  = $(window).height(),
-      _globalData = {};
+  var _globalData = {};
 
   var snb = snb || {};  
   window.snb = snb;
-  snb.VERSION = "2.0.2";
+  snb.VERSION = "2.0.3";
 
   // 当前页面的module,action和参数
   snb.MODULE  = "";
@@ -465,7 +463,7 @@
     snb.setEleToCenter("#Js-pop-body",opts);
     // resize下居中
     $(window).bind('resize',function(){
-      snb.setEleToCenter("#js-layer-main",opts);
+      snb.setEleToCenter("#Js-pop-body",opts);
     });
     // 设置可拖拽
     _moveAction(".title","#Js-pop-body");
@@ -533,7 +531,7 @@
     // }
     y += _winHeight/2-height/2;
     $ele.css({"position": "fixed",
-              "top" : opts.y || (y<0 ? 10 : y),
+              "top" : opts.y || (y<10 ? 10 : y),
               "left": opts.x || (_winWidth/2-width/2+(opts.offsetX||0)) });
   }
     
@@ -586,8 +584,7 @@
 
    //获得蒙版层
   function _getShadeLayer(layerClass) {
-    var window_height = $('body').outerHeight() > _winHeight?$('body').outerHeight() : _winHeight;
-    return '<div id="Js-shadeLayer" class="'+layerClass+' pop-bg" style="width:'+_winWidth+'px;height:'+window_height+'px;"></div>';
+    return '<div id="Js-shadeLayer" class="'+layerClass+' pop-bg"></div>';
   }
 
   /**
@@ -693,7 +690,7 @@
       timeoutId = window.setTimeout(function(){
         ajaxObj.abort();
         if(callback) {
-          callback.call(_this,{"wxStatus":"timeout"});
+          callback.call(_this,{"snbStatus":"timeout"});
         }
         snb.alert("请求超时，请稍后再试！");
       }, options.sendTimeout||20000);
@@ -737,14 +734,14 @@
   snb.validator = function () {
 
   };
-  
+
   /**
    * 懒加载
    * @name    lazyLoad
    * @param   {String}    运行上下文
   */
   snb.lazyLoad = function(context) {
-    var $els = $(context || "body").find("[wx-lz]:visible"),
+    var $els = $(context || "body").find("[snb-lz]:visible"),
         showType = snb.config.lazyLoadShowType,
         threshold  = snb.config.lazyLoadThreshold,
         _height = window.screen.height;
@@ -753,7 +750,7 @@
 
     $els.one("appear",function(){
       var $self = $(this),
-          url   = $self.attr("wx-lz");
+          url   = $self.attr("snb-lz");
       $self.loaded = true;
       $self.hide();
       $("<img />").on("load", function(){
@@ -809,7 +806,7 @@
       _pageSetup();
     } else if(snb.config.baseUrl){
       var ls = window.localStorage;
-      if(!ls){
+      if(ls){
         var lastVersion = ls.getItem("snbVersion");
         var configData = ls.getItem("snbConfig");
         if(lastVersion && lastVersion === snb.VERSION && configData){
@@ -897,8 +894,8 @@
   //插件检测
   function _pluginCheck(context){
     var $body = $(context || "body");
-    // var $wxUpload = $body.find("input[wx-upload]");
-    // _uploadPlugin($wxUpload);
+    // var $snbUpload = $body.find("input[snb-upload]");
+    // _uploadPlugin($snbUpload);
   }
 
   return snb

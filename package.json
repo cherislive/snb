@@ -1,6 +1,6 @@
 {
   "name": "snb",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "scripts": {
     "start": "http-server -a 0.0.0.0 -p 8000"
   },
