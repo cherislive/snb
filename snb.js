@@ -328,11 +328,13 @@
    * @return  {String}   pop对象
   */
   snb.dialog.loading = function (callback, opts) {
-    if(!$.isFunction(callback) && $.type(callback) === 'object')
+    if(!$.isFunction(callback) && $.type(callback) === 'object') {
       opts = callback;
+    }
     opts = opts || {};
+    opts.offsetY = opts.offsetY || 0
 
-    opts.content = $.type(callback) === 'string' ? callback : (opts.text ? opts.text : null);
+    opts.content = $.type(callback) === 'string' ? callback : (opts.text ? opts.text : null);    
     return _pop(snb.tpl(snb.config.loading, opts), callback, opts);
   };
 
@@ -346,9 +348,10 @@
    * @return  {String}    pop对象
   */
   snb.dialog.alert = function (content, callback, opts) {
-      if(!content) return;
-      if(!$.isFunction(callback) && $.type(callback) === 'object')
+      if (!content) return;
+      if (!$.isFunction(callback) && $.type(callback) === 'object') {
         opts = callback;
+      }
       opts = opts || {};
 
      opts.content = content;
@@ -374,7 +377,7 @@
 
       opts.shown = function(){
         $('#Js-confirm-ok').click(function(){
-          snb.dialog.popClose();
+          snb.dialog.close();
           if($.isFunction(callback))
             callback();
         });
@@ -384,11 +387,12 @@
 
   /**
    * 弹框关闭
-   * @name    popClose
+   * @name    close
   */
-  snb.dialog.popClose = function() {
-    if(_globalData.currentPop)
+  snb.dialog.close = function() {
+    if (_globalData.currentPop) {
       _globalData.currentPop.close();
+    }
   };
 
   /**
@@ -469,7 +473,9 @@
     _moveAction(".title","#Js-pop-body");
 
     function _close(){
-      if(opts.attachBg) $("body").css({"overflow":"auto","position":"static","height":"auto"});
+      if(opts.attachBg) {
+        $("body").css({"overflow":"auto","position":"static","height":"auto"});
+      }
       $("body").unbind("keyup");
       $(".Js-pop-close").unbind("click");
       $(".Js-pop").hide().remove();
@@ -516,12 +522,20 @@
     return _globalData.currentPop;
   }
 
-  //将元素设置为居中
+  //
+
+  /**
+   * 设置居中
+   * @name    pop
+   * @param   {String}    元素ID名
+   * @param   {Object}    配置选项
+   * @return  {Function}  元素居中
+  */
   snb.setEleToCenter = function (eleId, opts) {
     opts = opts || {};
     var _winWidth  =  $(window).width(),
         _winHeight =  $(window).height(),
-        y          =  opts.offsetY || -50,   //设置向上偏移
+        y          =  opts.offsetY === undefined ? -50 : opts.offsetY,   //设置向上偏移
         $ele       =  $(eleId),
         width      =  $ele.width(),
         height     =  $ele.height();
@@ -682,7 +696,7 @@
     }
     if(options.showLoad){
        timerLoadId = window.setTimeout(function(){
-          snb.loading();
+          snb.dialog.loading();
        },options.loadDelay || 10);
     }
     //设置发送延时
@@ -696,9 +710,9 @@
       }, options.sendTimeout||20000);
     }
     //发送前执行的方法
-    if(options.beforeSendDate){
-      if($.isFunction(options.beforeSendDate)){
-          options.beforeSendDate();
+    if(options.beforeSend){
+      if($.isFunction(options.beforeSend)){
+          options.beforeSend();
       }
     }
     ajaxObj = $.ajax({
@@ -710,17 +724,21 @@
       dataType: options.dataType || "json",
       success:function(backData, textStatus) {
         if(options.showLoad)
-          snb.popClose();
+          snb.dialog.close();
         window.clearTimeout(timerLoadId);
         if(options.sendTimeout)
           window.clearTimeout(timeoutId);
         if(backData[snb.config.dataFlag] == snb.config.dataDefaultAlertVal && (options.alertPrompt !== undefined ? options.alertPrompt : true)){
-          snb.dialog.alert(backData.message || backData.info,function(){if(callback) callback.call(options.context || _this, backData, options.extData);});
+          snb.dialog.alert(backData.message || backData.info, function(){
+            if(callback) {
+              callback.call(options.context || _this, backData, options.extData);
+            }
+          });
         } else {
           if(callback === snb.RELOAD)
             location.reload();
           else if($.isFunction(callback))
-            callback.call(options.context||_this, backData, options.extData);
+            callback.call(options.context|| _this, backData, options.extData);
         }
       },error:function(xhr, textStatus, errorThrown) {
         window.clearTimeout(timerLoadId);

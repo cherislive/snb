@@ -9,7 +9,7 @@ npm install snb -S
 ## Quick Start
 ```
 import 'snb'
-import 'snb/src/snb.css'
+import 'snb/snb.css'
 ```
 
 ## Config

@@ -5,7 +5,7 @@
     "start": "http-server -a 0.0.0.0 -p 8000"
   },
   "author": "cheris",
-  "main": "src/snb.js",
+  "main": "snb.js",
   "dependencies": {
     "express": "^4.15.4",
     "http-server": "^0.10.0",
