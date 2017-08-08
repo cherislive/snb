@@ -1,6 +1,5 @@
 # snb
-
-基于jquery的基础类库 提供前端所需要的常用便捷方法。
+> Based on jquery's basic class library, the most common and convenient ways to provide the front end are available.
 
 ## Install
 ```
