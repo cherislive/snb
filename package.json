@@ -1,0 +1,17 @@
+{
+  "name": "snb",
+  "version": "1.0.2",
+  "scripts": {
+    "start": "http-server -a 0.0.0.0 -p 8000"
+  },
+  "author": "cheris",
+  "main": "src/snb.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "http-server": "^0.10.0",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {},
+  "license": "ISC",
+  "description": ""
+}
