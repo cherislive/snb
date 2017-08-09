@@ -14,11 +14,11 @@
       }
       return factory(w);
     }
-  } else if(typeof define === 'function' && define.amd) {
+  } else if (typeof define === 'function' && define.amd) {
     define(['jquery'], function ($) {
       root['snb'] = factory(root, document, $, undefined)
     })
-  } else if(typeof exports === 'object') {
+  } else if (typeof exports === 'object') {
     var $ = require('jquery');
     exports['snb'] = factory(root, document, $, undefined)
   } else {
@@ -29,11 +29,11 @@
 
   var snb = snb || {};  
   window.snb = snb;
-  snb.VERSION = "2.0.3";
+  snb.VERSION = '2.0.3';
 
   // 当前页面的module,action和参数
-  snb.MODULE  = "";
-  snb.ACTION  = "";
+  snb.MODULE  = '',
+  snb.ACTION  = '',
   snb.REQUEST = {};
 
   // 用于弹出框的常量值
@@ -46,7 +46,7 @@
   _protoExtend(); // 对原生进行扩展
   _browserCheck();
 
-  $(function(){
+  $(function () {
     _pageInit();
     snb.lazyLoad();
   });
@@ -104,18 +104,18 @@
         sTime = new Date().getTime();
         time -= offsetTime;
         var fTime = getFormatTime(time, 0);
-        if(offsetTime > 1200 || offsetTime < 900){
+        if (offsetTime > 1200 || offsetTime < 900) {
           time =  timeback - (new Date().getTime() - initTime);
         }
-        if(time <= 0){
+        if (time <= 0) {
           clearInterval(timeId);
-          if(typeof doneCallback !== 'undefined') {
+          if (typeof doneCallback !== 'undefined') {
             doneCallback(index);
           }
         } else {
           showCallback && showCallback(fTime[0], fTime[1], fTime[2], fTime[3]);
         }
-      },1000);
+      }, 1000);
     }
     function getFormatTime (t, isShow) {
       t = t/1000;
@@ -151,8 +151,9 @@
       };
     } else {
       image.onload = function () {
-        if (image.complete)
+        if (image.complete) {
           callback(image.width, image.height);
+        }
       };
     }
   };
@@ -189,9 +190,9 @@
    * @return  {String}  转化后的字符串
   */
   snb.jsonToString = function (json, isEncode) {
-    var strTemp = "";
+    var strTemp = '';
     for (var key in json) {
-      strTemp += key + '=' + (isEncode?encodeURIComponent(json[key]):json[key]) + '&';
+      strTemp += key + '=' + (isEncode ? encodeURIComponent(json[key]) : json[key]) + '&';
     }
     return strTemp.slice(0, -1);
   };
@@ -203,13 +204,13 @@
    * @param   {Boolean} 是否要进行转码
    * @return  {String}  转化后的Json对象
   */
-  snb.stringToJson = function (string,isDecode) {
-    var tempURL = string.split('&'), json="";
-    for(var i = 0;i<tempURL.length;i++){
+  snb.stringToJson = function (string, isDecode) {
+    var tempURL = string.split('&'), json = '';
+    for (var i = 0; i < tempURL.length; i++) {
       var t = tempURL[i].split('=');
-      json += "'"+t[0]+"':'"+(isDecode?decodeURIComponent(t[1]):t[1])+"',";
+      json += "'" + t[0] + "':'" + (isDecode ? decodeURIComponent(t[1]) : t[1]) + "',";
     }
-    return eval("({"+json.slice(0,-1)+"})");
+    return eval('({' + json.slice(0, -1) + '})');
   };
 
   /**
@@ -220,11 +221,15 @@
    * @return  {String}  处理过的字符串
   */
   snb.trim = function (str, is_global) {
-    if(!str) return '';
+    if (!str) {
+      return '';
+    }
     //return str.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
     //var result = str.replace(/(^\s+)|(\s+$)/g, "");
     var result = str.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
-    if (is_global) result = result.replace(/\s/g, '');
+    if (is_global) {
+      result = result.replace(/\s/g, '');
+    }
     return result;
   };
 
@@ -282,7 +287,7 @@
    * @param   {String}  名字
   */
   snb.removeCookie = function (key) {
-    snb.cookie(key,'',{expires:-1});
+    snb.cookie(key, '', {expires:-1});
   };
 
   /**
@@ -296,24 +301,25 @@
       this.isFirst = true;
     }
     Promise.prototype = {
-      then : function (fn, context) {
-        this.methods.push({callback:fn,context:this});
-        if(this.isFirst){
+      then: function (fn, context) {
+        this.methods.push({callback: fn, context: this});
+        if (this.isFirst) {
           this.next();
           this.isFirst = false;
         }
         return this;
       },
-      next : function(){
+      next: function () {
         var _this = this,
             _next = this.methods.shift(),
              args = Array.prototype.slice.call(arguments);
-        args.unshift(function(){
-          if(_next)
-            _this.next.apply(_this,arguments);
+        args.unshift(function () {
+          if (_next) {
+            _this.next.apply(_this, arguments);
+          }
         });
-        if(_next){
-          _next.callback.apply(_next.context,args);
+        if (_next) {
+          _next.callback.apply(_next.context, args);
         }
       }
     };
@@ -328,7 +334,7 @@
    * @return  {String}   pop对象
   */
   snb.dialog.loading = function (callback, opts) {
-    if(!$.isFunction(callback) && $.type(callback) === 'object') {
+    if (!$.isFunction(callback) && $.type(callback) === 'object') {
       opts = callback;
     }
     opts = opts || {};
@@ -348,7 +354,9 @@
    * @return  {String}    pop对象
   */
   snb.dialog.alert = function (content, callback, opts) {
-      if (!content) return;
+      if (!content) {
+        return;
+      }
       if (!$.isFunction(callback) && $.type(callback) === 'object') {
         opts = callback;
       }
@@ -367,19 +375,23 @@
    * @param   {Object}    配置选项
   */
   snb.dialog.confirm = function (content, callback, opts) {
-      if(!content) return;
-      if(!$.isFunction(callback) && $.type(callback) === 'object')
+      if (!content) {
+        return;
+      }
+      if (!$.isFunction(callback) && $.type(callback) === 'object') {
         opts = callback;
+      }
       opts = opts || {};
 
       opts.content = content;
       snb.config.confirm = _configTplTranslate(snb.config.confirm);
 
-      opts.shown = function(){
-        $('#Js-confirm-ok').click(function(){
+      opts.shown = function () {
+        $('#Js-confirm-ok').click(function () {
           snb.dialog.close();
-          if($.isFunction(callback))
+          if ($.isFunction(callback)) {
             callback();
+          }
         });
       };
       return _pop(snb.tpl(snb.config.confirm, opts), opts);
@@ -389,7 +401,7 @@
    * 弹框关闭
    * @name    close
   */
-  snb.dialog.close = function() {
+  snb.dialog.close = function () {
     if (_globalData.currentPop) {
       _globalData.currentPop.close();
     }
@@ -403,119 +415,128 @@
    * @param   {Object}    配置选项
    * @return  {String}    pop对象
   */
-  snb.dialog.pop = function(content, callback, opts) {
-    if(!content) return;
-    if(!$.isFunction(callback) && $.type(callback) === "object")
+  snb.dialog.pop = function (content, callback, opts) {
+    if (!content) {
+      return;
+    }
+    if (!$.isFunction(callback) && $.type(callback) === 'object') {
       opts = callback;
+    }
     opts = opts || {};
     var temp;
-    if(/^#/.test(content)){
-      if(!$(content).length) return;
+    if (/^#/.test(content)) {
+      if (!$(content).length) {
+        return;
+      }
       temp = _configTplTranslate(snb.config.pop);
-      if(opts.removeAfterShow)
+      if (opts.removeAfterShow) {
        $(content).remove();
-    } else{
+      }
+    } else {
       temp = _configTplTranslate(snb.config.pop);
       
     }
-    return _pop(snb.tpl(temp,opts),callback,opts);
+    return _pop(snb.tpl(temp, opts), callback, opts);
   };
 
   //解决弹出模板问题
-  function _configTplTranslate(string){
-    return string.replace('<%',snb.config.tplOpenTag).replace('%>',snb.config.tplCloseTag);
+  function _configTplTranslate (string) {
+    return string.replace('<%', snb.config.tplOpenTag).replace('%>', snb.config.tplCloseTag);
   }
 
   //弹框的核心方法
-  function _pop(content, callback, opts) {
-    if(!$.isFunction(callback) && $.type(callback) === "object")
+  function _pop (content, callback, opts) {
+    if (!$.isFunction(callback) && $.type(callback) === 'object') {
       opts = callback;
+    }
     opts = opts || {};
 
-    if(callback === snb.RELOAD){
-      callback = function(){
+    if (callback === snb.RELOAD) {
+      callback = function () {
         location.reload();
       };
-    } else if(callback === snb.BACK){
-      callback = function(){
+    } else if (callback === snb.BACK) {
+      callback = function () {
         history.back(-1);
       };
-    } else if(callback && $.type(callback) === "string"){
+    } else if (callback && $.type(callback) === 'string') {
       var jumpUrl = callback;
-      callback = function(){
+      callback = function () {
         location.href = jumpUrl;
       };
     }
     //立刻执行回调函数，不弹出浮框
-    if(opts.notPop){
+    if (opts.notPop) {
       callback();
       return;
     }
 
-    $(".Js-pop").stop().remove();
+    $('.Js-pop').stop().remove();
     var htmlText = content;
-    var temp = _getShadeLayer("Js-pop")+
-                "<div id='Js-pop-body' class='Js-pop pop-container'>"+
-                  htmlText+
-                "</div>";
-    $("body").append(temp).keyup(function(event){
-      if(event.keyCode === 27)
+    var temp = _getShadeLayer('Js-pop') +
+                '<div id="Js-pop-body" class="Js-pop pop-container">' +
+                  htmlText +
+                '</div>';
+    $('body').append(temp).keyup(function (event) {
+      if (event.keyCode === 27) {
         _close();
+      }
     });
 
-    $("#Js-pop-body").children().show();
-    snb.setEleToCenter("#Js-pop-body",opts);
+    $('#Js-pop-body').children().show();
+    snb.setEleToCenter('#Js-pop-body', opts);
     // resize下居中
-    $(window).bind('resize',function(){
-      snb.setEleToCenter("#Js-pop-body",opts);
+    $(window).bind('resize', function () {
+      snb.setEleToCenter('#Js-pop-body', opts);
     });
     // 设置可拖拽
-    _moveAction(".title","#Js-pop-body");
+    _moveAction('.title', '#Js-pop-body');
 
-    function _close(){
-      if(opts.attachBg) {
-        $("body").css({"overflow":"auto","position":"static","height":"auto"});
+    function _close () {
+      if (opts.attachBg) {
+        $('body').css({'overflow': 'auto', 'position': 'static', 'height': 'auto'});
       }
-      $("body").unbind("keyup");
-      $(".Js-pop-close").unbind("click");
-      $(".Js-pop").hide().remove();
+      $('body').unbind('keyup');
+      $('.Js-pop-close').unbind('click');
+      $('.Js-pop').hide().remove();
       _globalData.currentPop = null;
     }
 
-    if(opts.layerClick){
-      $("#Js-shadeLayer").unbind("click").click(function(){
+    if (opts.layerClick) {
+      $('#Js-shadeLayer').unbind('click').click(function () {
         _close();
       });
     }
-    if(opts.attachBg){
-      $("body").css({"overflow":"hidden","position":"relative","height":$(window).height()});
-      $("#Js-shadeLayer").css({"width":$(window).width(),"height":$(window).height()});
+    if (opts.attachBg) {
+      $('body').css({'overflow': 'hidden', 'position': 'relative', 'height': $(window).height()});
+      $('#Js-shadeLayer').css({'width': $(window).width(), 'height': $(window).height()});
     }
     
-    _pluginCheck("#Js-pop-body");
+    _pluginCheck('#Js-pop-body');
     // 弹出框弹出后的回调方法
-    if($.isFunction(opts.shown)){
+    if ($.isFunction(opts.shown)) {
       opts.shown();
     }
     snb.validator();
-    $(".Js-pop-close").click(function(){
+    $('.Js-pop-close').click(function () {
      _close();
-     if($.isFunction(callback))
+     if ($.isFunction(callback)) {
         callback();
-     else if($.isFunction(opts.close))
+     } else if ($.isFunction(opts.close)) {
         opts.close();
+     }
     });    
     // 根据autoCloseTime 后自动关闭弹出框
-    if(opts.autoClose){
-      window.setTimeout(function(){
+    if (opts.autoClose) {
+      window.setTimeout(function () {
         _close();
-      },opts.autoCloseTime || 3000);
+      }, opts.autoCloseTime || 3000);
     }
 
     _globalData.currentPop = {
       close : _close,
-      open  : function(){
-        _pop(htmlText,callback,opts);
+      open  : function () {
+        _pop(htmlText, callback, opts);
       }
     };
 
@@ -544,9 +565,9 @@
     //   $ele.css("position","absolute");
     // }
     y += _winHeight/2-height/2;
-    $ele.css({"position": "fixed",
-              "top" : opts.y || (y<10 ? 10 : y),
-              "left": opts.x || (_winWidth/2-width/2+(opts.offsetX||0)) });
+    $ele.css({'position': 'fixed',
+              'top' : opts.y || (y<10 ? 10 : y),
+              'left': opts.x || (_winWidth / 2 - width / 2 + (opts.offsetX || 0)) });
   }
     
   //使元素可拖拽移动
@@ -556,14 +577,16 @@
         lastY       = -1,
         offsetX     = -1,
         offsetY     = -1,
-        $winBody    = $("body"),
+        $winBody    = $('body'),
         $moveBar    = $(moveBar),
         $moveBody   = $(moveBody),
-        isAbsoluate = $moveBody.css("position") === "absolute" ? true : false;
+        isAbsoluate = $moveBody.css('position') === 'absolute' ? true : false;
 
-    if($moveBar.length === 0 || $moveBody.length === 0) return;
-    $moveBar.css("cursor","move").unbind("mousedown").
-      bind("mousedown",function(event){
+    if ($moveBar.length === 0 || $moveBody.length === 0) {
+      return;
+    };
+    $moveBar.css('cursor', 'move').unbind('mousedown').
+      bind('mousedown', function (event) {
         event.preventDefault();
         var body  = $moveBody,
             tempX = body.offset().left,
@@ -573,32 +596,34 @@
         lastY   = event.clientY;
         offsetX = event.clientX - tempX;
         offsetY = event.clientY - tempY;
-        $winBody.unbind("mousemove").bind("mousemove",function(event){
-            if(!isMove) return false;
+        $winBody.unbind('mousemove').bind('mousemove', function (event) {
+            if (!isMove) {
+              return false;
+            }
             event.preventDefault();
             event.stopPropagation();
             lastX = event.clientX - lastX;
             lastY = event.clientY - lastY;
-            body.css({"left" : event.clientX-lastX-offsetX,"top" : event.clientY-lastY-offsetY});
+            body.css({'left': event.clientX-lastX-offsetX, 'top': event.clientY - lastY - offsetY});
             lastX = event.clientX;
             lastY = event.clientY;
         });
-    }).unbind("mouseup").bind("mouseup",function(event){
+    }).unbind('mouseup').bind('mouseup', function (event) {
         isMove = false;
-        $winBody.unbind("mousemove");
+        $winBody.unbind('mousemove');
     });
-    $winBody.unbind("mouseup").bind("mouseup",function(){
+    $winBody.unbind('mouseup').bind('mouseup', function () {
         isMove = false;
     });
-    $moveBar.blur(function(){
+    $moveBar.blur(function () {
         isMove = false;
-        $winBody.unbind("mousemove");
+        $winBody.unbind('mousemove');
     });
   }
 
    //获得蒙版层
-  function _getShadeLayer(layerClass) {
-    return '<div id="Js-shadeLayer" class="'+layerClass+' pop-bg"></div>';
+  function _getShadeLayer (layerClass) {
+    return '<div id="Js-shadeLayer" class="' + layerClass + ' pop-bg"></div>';
   }
 
   /**
@@ -608,61 +633,64 @@
    * @param   {String}  需要结合的数据
    * @param   {String}  模板和数据结合后将append到这个元素里
   */
-  snb.tpl = function(template,data,appendEle){
+  snb.tpl = function(template, data, appendEle){
       snb.tpl.cache = snb.tpl.cache || {};
-      if(!snb.tpl.cache[template]){
+      if (!snb.tpl.cache[template]) {
         var content    = template,
             match      = null,
             lastcursor = 0,
             codeStart  = 'var c = [];',
             codeEnd    = 'return c.join("");',
-            param      = "",
-            compileTpl = "",
+            param      = '',
+            compileTpl = '',
             checkEXP   = /(^( )?(if|for|else|switch|case|continue|break|{|}))(.*)?/g,
-            searchEXP  = new RegExp(snb.config.tplOpenTag+"(.*?)"+snb.config.tplCloseTag+"?","g"),
+            searchEXP  = new RegExp(snb.config.tplOpenTag + '(.*?)' + snb.config.tplCloseTag + '?', 'g'),
             replaceEXP = /[^\w$]+/g;
 
-        if(template.charAt(0) === "#")
+        if (template.charAt(0) === '#') {
           content = $(template).html();
-        else
+        } else {
           content = template;
+        }
 
         while(match = searchEXP.exec(content)){
           var b = RegExp.$1;
-          var c = content.substring(lastcursor,match.index);
+          var c = content.substring(lastcursor, match.index);
           c = _formatString(c);
-          compileTpl += 'c.push("'+c+'");\n';
-          if(checkEXP.test(b)){
+          compileTpl += 'c.push("' + c + '");\n';
+          if (checkEXP.test(b)) {
             compileTpl += b;
-          }
-          else{
-            compileTpl += 'c.push('+b+');\n';
+          } else {
+            compileTpl += 'c.push(' + b + ');\n';
           }
           _setVar(b);
-          lastcursor = match.index+match[0].length;
+          lastcursor = match.index + match[0].length;
         }
-        compileTpl+= 'c.push("'+snb.trim(_formatString(content.substring(lastcursor)))+'");';
-        snb.tpl.cache[template] = new Function('data','helper',param+codeStart+compileTpl+codeEnd);
+        compileTpl+= 'c.push("' + snb.trim(_formatString(content.substring(lastcursor))) + '");';
+        snb.tpl.cache[template] = new Function('data', 'helper', param + codeStart + compileTpl + codeEnd);
       }
 
-      var result = snb.tpl.cache[template].call(null,data,snb.tpl.helperList);
-      if(appendEle){
+      var result = snb.tpl.cache[template].call(null, data, snb.tpl.helperList);
+      if (appendEle) {
        $(appendEle).append(result);
       }
 
       function _formatString(s){
-        return s.replace(/^\s*|\s*$/gm, '').replace(/[\n\r\t\s]+/g, ' ').replace(/"/gm,'\\"');
+        return s.replace(/^\s*|\s*$/gm, '').replace(/[\n\r\t\s]+/g, ' ').replace(/"/gm, '\\"');
       }
 
       function _setVar(code){
-        code = code.replace(replaceEXP,',').split(',');
-        for(var i=0,l=code.length;i<l;i++){
-          code[i] = code[i].replace(checkEXP,'');
-          if(!code[i].length || /^\d+$/.test(code[i])) continue;
-          if(snb.tpl.helperList && code[i] in snb.tpl.helperList)
-            param += code[i]+' = helper.'+code[i]+';';
-          else
-            param += 'var '+code[i]+' = data.'+code[i]+';';
+        code = code.replace(replaceEXP, ',').split(',');
+        for (var i=0, l=code.length; i<l; i++) {
+          code[i] = code[i].replace(checkEXP, '');
+          if (!code[i].length || /^\d+$/.test(code[i])) {
+            continue;
+          }
+          if (snb.tpl.helperList && code[i] in snb.tpl.helperList) {
+            param += code[i] + ' = helper.' + code[i] + ';';
+          } else {
+            param += 'var '+ code[i] +' = data.' + code[i] + ';';
+          }
         }
       }
     return result;
@@ -676,75 +704,80 @@
    * @param   {Object}   配置选项，如果为字符串则当做发送参数
    * @param   {Function} 请求返回后的回调方法
   */
-  var _lastSendDataUrl, _lastUrlTimeout = snb.throttle(function(){_lastSendDataUrl="";},1500);
-  snb.sendData=function(url, options, callback) {
+  var _lastSendDataUrl, _lastUrlTimeout = snb.throttle(function () {_lastSendDataUrl = '';}, 1500);
+  snb.sendData = function (url, options, callback) {
     var ajaxObj     = null,
         _this       = this,
         timeoutId   = -1,
         timerLoadId = -1,
-        currentUrl  = url+(options.param || options),
-        urlParam    = options.param || ($.type(options) === "string" ? options : '');
+        currentUrl  = url + (options.param || options),
+        urlParam    = options.param || ($.type(options) === 'string' ? options : '');
 
-    if(!options.dontCheck && currentUrl === _lastSendDataUrl){
+    if (!options.dontCheck && currentUrl === _lastSendDataUrl) {
       return;
     }
     _lastUrlTimeout();
     _lastSendDataUrl = currentUrl;
-    if($.isFunction(options)){
+    if ($.isFunction(options)) {
       callback = options;
       options  = {};
     }
-    if(options.showLoad){
-       timerLoadId = window.setTimeout(function(){
+    if (options.showLoad) {
+       timerLoadId = window.setTimeout(function () {
           snb.dialog.loading();
        },options.loadDelay || 10);
     }
     //设置发送延时
-    if(options.sendTimeout){
-      timeoutId = window.setTimeout(function(){
+    if (options.sendTimeout) {
+      timeoutId = window.setTimeout(function () {
         ajaxObj.abort();
-        if(callback) {
-          callback.call(_this,{"snbStatus":"timeout"});
+        if (callback) {
+          callback.call(_this, {'snbStatus': 'timeout'});
         }
-        snb.alert("请求超时，请稍后再试！");
-      }, options.sendTimeout||20000);
+        snb.dialog.alert('请求超时，请稍后再试！');
+      }, options.sendTimeout || 20000);
     }
     //发送前执行的方法
-    if(options.beforeSend){
-      if($.isFunction(options.beforeSend)){
-          options.beforeSend();
+    if (options.beforeSend) {
+      if ($.isFunction(options.beforeSend)) {
+        options.beforeSend();
       }
     }
     ajaxObj = $.ajax({
-      type: options.type || "post",
+      type: options.type || 'POST',
       url: url,
       async:options.async === false ? false : true,
       context:options.context || this,
       data: urlParam,
-      dataType: options.dataType || "json",
-      success:function(backData, textStatus) {
-        if(options.showLoad)
+      dataType: options.dataType || 'json',
+      success: function (backData, textStatus) {
+        if (options.showLoad) {
           snb.dialog.close();
+        }
         window.clearTimeout(timerLoadId);
-        if(options.sendTimeout)
+        if (options.sendTimeout) {
           window.clearTimeout(timeoutId);
-        if(backData[snb.config.dataFlag] == snb.config.dataDefaultAlertVal && (options.alertPrompt !== undefined ? options.alertPrompt : true)){
-          snb.dialog.alert(backData.message || backData.info, function(){
-            if(callback) {
+        }
+        if (backData[snb.config.dataFlag] == snb.config.dataDefaultAlertVal && (options.alertPrompt !== undefined ? options.alertPrompt : true)) {
+          snb.dialog.alert(backData.message || backData.info, function () {
+            if (callback) {
               callback.call(options.context || _this, backData, options.extData);
             }
           });
         } else {
-          if(callback === snb.RELOAD)
+          if (callback === snb.RELOAD) {
             location.reload();
-          else if($.isFunction(callback))
+          } else if ($.isFunction(callback)) {
             callback.call(options.context|| _this, backData, options.extData);
+          }
         }
-      },error:function(xhr, textStatus, errorThrown) {
+      },
+      error: function (xhr, textStatus, errorThrown) {
         window.clearTimeout(timerLoadId);
         window.clearTimeout(timeoutId);
-        if(callback)
-          callback.call(_this,{"snbStatus":"error",message:textStatus});
+        if (callback) {
+          callback.call(_this, {'snbStatus': 'error', message: textStatus});
+        }
       }
     });
   };
@@ -758,138 +791,145 @@
    * @name    lazyLoad
    * @param   {String}    运行上下文
   */
-  snb.lazyLoad = function(context) {
-    var $els = $(context || "body").find("[snb-lz]:visible"),
+  snb.lazyLoad = function (context) {
+    var $els = $(context || 'body').find('[snb-lz]:visible'),
         showType = snb.config.lazyLoadShowType,
         threshold  = snb.config.lazyLoadThreshold,
         _height = window.screen.height;
         
-    if(!$els.length) return;
+    if (!$els.length) {
+      return;
+    }
 
-    $els.one("appear",function(){
+    $els.one('appear', function(){
       var $self = $(this),
-          url   = $self.attr("snb-lz");
+          url   = $self.attr('snb-lz');
       $self.loaded = true;
       $self.hide();
-      $("<img />").on("load", function(){
-        if($self.is("img"))
-          $self.attr("src",url);
-        else
-          $self.css("background-image","url("+url+")");
+      $('<img />').on('load', function () {
+        if ($self.is('img')) {
+          $self.attr('src', url);
+        } else {
+          $self.css('background-image', 'url(' + url + ')');
+        }
         $self[showType]();
-      }).attr("src",url);
+      }).attr('src', url);
     });
 
-    function update(){
-      $els.each(function(){
+    function update () {
+      $els.each(function () {
         var $self = $(this);
-        if($self.loaded) return;
+        if($self.loaded) {
+          return;
+        }
         checkPos($self);
       });
     }
 
-    function checkPos($el){
-      var scroll = $(document).scrollTop()+_height;
-      if($el.offset().top < scroll+threshold){
+    function checkPos ($el) {
+      var scroll = $(document).scrollTop() + _height;
+      if ($el.offset().top < scroll + threshold) {
         $el.trigger('appear');
       }
     }
 
-    $(window).on("scroll",snb.throttle(update,100));
+    $(window).on('scroll', snb.throttle(update, 100));
     update();
   };
 
   //页面初始化
-  function _pageInit() {
-    if(window.console === undefined){
-      window.console = {log:function(){}};
+  function _pageInit () {
+    if (window.console === undefined) {
+      window.console = {log: function () {}};
     }
-    snb.log = function(text){
-      console.log("%c"+text,"color:red;font-size:20px;font-weight:bold");
+    snb.log = function (text) {
+      console.log('%c' + text, 'color:red;font-size:20px;font-weight:bold');
     };
 
     if (!snb.config.baseUrl) {
-      var url = ''
-      var tmpMailEl = $("script[snb-main]")
+      var url = '';
+      var tmpMailEl = $('script[snb-main]');
       if (tmpMailEl.length) {        
-        url = tmpMailEl.attr("snb-main") ? tmpMailEl.attr("snb-main").split('/') : tmpMailEl.attr("src").split('/');
+        url = tmpMailEl.attr('snb-main') ? tmpMailEl.attr('snb-main').split('/') : tmpMailEl.attr('src').split('/');
       } else {
-        url = $("script:first").attr("src").split('/');
+        url = $('script:first').attr('src').split('/');
       }
-      var src = url.slice(0,url.indexOf("js"));
+      var src = url.slice(0, url.indexOf('js'));
       snb.config.baseUrl = src.length ? src.join('/')  + '/' : './';
     }
 
-    if(snb.config.loading){
+    if (snb.config.loading) {
       _pageSetup();
-    } else if(snb.config.baseUrl){
+    } else if (snb.config.baseUrl) {
       var ls = window.localStorage;
-      if(ls){
-        var lastVersion = ls.getItem("snbVersion");
-        var configData = ls.getItem("snbConfig");
-        if(lastVersion && lastVersion === snb.VERSION && configData){
-          window.setTimeout(function(){
-           snb.config = snb.stringToJson(configData,true);
+      if (ls) {
+        var lastVersion = ls.getItem('snbVersion');
+        var configData = ls.getItem('snbConfig');
+        if (lastVersion && lastVersion === snb.VERSION && configData){
+          window.setTimeout(function () {
+           snb.config = snb.stringToJson(configData, true);
            _pageSetup();
-          },0);
+          }, 0);
         } else {
-          $.getScript(snb.config.baseUrl+"snb.config.js",function(){
+          $.getScript(snb.config.baseUrl + 'snb.config.js', function () {
               _pageSetup();
-              if(snb.config.cache){
-                ls.setItem("snbVersion",snb.VERSION);
-                ls.setItem("snbConfig",snb.jsonToString(snb.config,true));
+              if (snb.config.cache) {
+                ls.setItem('snbVersion', snb.VERSION);
+                ls.setItem('snbConfig', snb.jsonToString(snb.config, true));
               }
           });
         }
       } else {
-        $.getScript(snb.config.baseUrl+"snb.config.js",_pageSetup);
+        $.getScript(snb.config.baseUrl + 'snb.config.js', _pageSetup);
       }
     } else {
-      snb.log("请设置静态文件路径");
+      snb.log('请设置静态文件路径');
     }
   }
 
   //页面构建
-  function _pageSetup() {
+  function _pageSetup () {
     _pluginCheck();
 
-    try{
-      var path = location.pathname.substring(1).split("/");
-      if(snb.config.route == 1){
-        if(path[1]){
-          for (var i = 0,list = path[1].split("-"),len = list.length; i < len; i+=2) {
-            snb.REQUEST[list[i]] = list[i+1];
+    try {
+      var path = location.pathname.substring(1).split('/');
+      if (snb.config.route == 1) {
+        if (path[1]) {
+          for (var i = 0, list = path[1].split('-'), len = list.length; i < len; i += 2) {
+            snb.REQUEST[list[i]] = list[i + 1];
           }
         }
-        snb.MODULE = path[0].split("-")[0];
-        snb.ACTION = path[0].split("-")[1] || "index";
+        snb.MODULE = path[0].split('-')[0];
+        snb.ACTION = path[0].split('-')[1] || 'index';
       }
     }
-    catch(e){snb.log("路径解析错误");}
+    catch(e){snb.log('路径解析错误');}
 
-    if($.isFunction(window.snbInit))
+    if ($.isFunction(window.snbInit)) {
       window.snbInit();
+    }
   }
 
   //对原生进行扩展
-  function _protoExtend(){
-    var arrayProto = Array.prototype,stringProto = String.prototype;
-    if(stringProto.getBytes === undefined){
-      stringProto.getBytes = function() {
+  function _protoExtend () {
+    var arrayProto = Array.prototype, stringProto = String.prototype;
+    if (stringProto.getBytes === undefined) {
+      stringProto.getBytes = function () {
         var cArr = this.match(/[^x00-xff]/ig);
         return this.length + (cArr === null ? 0 : cArr.length);
       };
     }
-    if(arrayProto.remove === undefined){
-      arrayProto.remove = function(index){
-        return index > this.length ? this : this.splice(index,1) && this;
+    if (arrayProto.remove === undefined) {
+      arrayProto.remove = function (index) {
+        return index > this.length ? this : this.splice(index, 1) && this;
       };
     }
-    if(arrayProto.indexOf === undefined){
-      arrayProto.indexOf = function(value){
-        for (var i = 0,len = this.length; i < len; i++) {
-          if(this[i] === value)
+    if (arrayProto.indexOf === undefined) {
+      arrayProto.indexOf = function (value) {
+        for (var i = 0, len = this.length; i < len; i++) {
+          if (this[i] === value) {
             return i;
+          }
         }
         return -1;
       };
@@ -897,12 +937,12 @@
   }
 
   //浏览器类型
-  function _browserCheck(){
+  function _browserCheck () {
     snb.browser = snb.browser || {version:0};
     var ua = navigator.userAgent.toLowerCase(),
-      msie = ua.indexOf("compatible") !== -1 && ua.indexOf("msie") !== -1;
+      msie = ua.indexOf('compatible') !== -1 && ua.indexOf('msie') !== -1;
 
-    if(msie){
+    if (msie) {
       snb.browser.msie = true;
       /msie (\d+\.\d+);/.test(ua);
       snb.browser.version = parseInt(RegExp.$1);
@@ -910,8 +950,8 @@
   }
 
   //插件检测
-  function _pluginCheck(context){
-    var $body = $(context || "body");
+  function _pluginCheck (context) {
+    var $body = $(context || 'body');
     // var $snbUpload = $body.find("input[snb-upload]");
     // _uploadPlugin($snbUpload);
   }
