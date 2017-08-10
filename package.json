@@ -1,6 +1,6 @@
 {
   "name": "snb",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Based on jquery's basic class library, the most common and convenient ways to provide the front end are available.",  
   "author": "cheris",
   "main": "snb.js",

@@ -182,6 +182,41 @@
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
   };
 
+  /*
+   * 获得URL参数值
+   * @name    getQueryString
+   * @param   {String}  要获得的参数名 不传返回json数据 传值 返回key对应的Value
+   * @return  {String}  返回结果
+  */
+  snb.getQueryString = function (name){
+      var pattern    = new RegExp("[?&]" + name +"\=([^&]+)","g");
+      var patternDef = new RegExp("[\?\&][^\?\&]+=[^\?\&]+","g");
+      var matcher    = pattern.exec(window.location.href);
+      var items      = null;
+      if(name && matcher != null){
+          try{
+              items = decodeURIComponent(decodeURIComponent(matcher[1]));
+          }catch(e){
+              try{
+                  items = decodeURIComponent(matcher[1]);
+              }catch(e){
+                  items = matcher[1];
+              }
+          }
+      }else{
+        patternDef = location.search.match(patternDef);
+        if(patternDef != null){
+          var tmpArray;
+          items = {};
+          for(var i = 0; i < patternDef.length; i++){
+             tmpArray = patternDef[i].substring(1).split('=');
+             items[tmpArray[0]] = tmpArray[1];
+          }
+        }
+      }
+      return items;
+  };
+
   /**
    * 将Json数据转为String
    * @name    jsonToString
