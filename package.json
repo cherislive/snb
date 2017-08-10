@@ -1,11 +1,16 @@
 {
   "name": "snb",
-  "version": "1.0.4",
+  "version": "1.0.5",
+  "description": "Based on jquery's basic class library, the most common and convenient ways to provide the front end are available.",  
+  "author": "cheris",
+  "main": "snb.js",
   "scripts": {
     "start": "http-server -a 0.0.0.0 -p 8000"
   },
-  "author": "cheris",
-  "main": "snb.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cherislive/snb.git"
+  },
   "dependencies": {
     "express": "^4.15.4",
     "http-server": "^0.10.0",
@@ -13,5 +18,11 @@
   },
   "devDependencies": {},
   "license": "ISC",
-  "description": ""
+  "keywords": [
+    "jquery", "SNB", "plug-in", "class libraries"
+  ],
+  "bugs": {
+    "url": "https://github.com/cherislive/snb/issues"
+  },
+  "homepage": "https://github.com/cherislive/snb#readme"
 }

@@ -1,6 +1,12 @@
 # snb
 > Based on jquery's basic class library, the most common and convenient ways to provide the front end are available.
 
+<center>
+[![Version](https://img.shields.io/npm/v/snb.svg)](https://www.npmjs.com/package/snb)  [![Download](https://img.shields.io/npm/dm/snb.svg)](https://www.npmjs.com/package/snb)  [![GitHub forks](https://img.shields.io/github/forks/cherislive/snb.svg)](https://github.com/cherislive/snb/network)  [![GitHub stars](https://img.shields.io/github/stars/cherislive/snb.svg)](https://github.com/cherislive/snb/stargazers)</center>
+<center>
+[![NPM](https://nodei.co/npm/snb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/snb/)
+</center>
+
 ## Install
 ```
 npm install snb -S
