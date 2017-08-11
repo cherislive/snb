@@ -15,11 +15,24 @@
 npm install snb -S
 ```
 
-## Quick Start
+## Use with NPM
 ```
 import 'snb'
 import 'snb/snb.css'
+import './snb.config.js'
 ```
+> **You must ensure that the config file is correct.**
+> `jquery` is required, the best jquery version is 1.11.0 (1.X.X).
+> `snb.config.js` is also required.
+
+## jQuery usage
+Include jQuery and snb.js scripts in the header, ensure that the config file is correct.
+
+```
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="snb.js"></script>
+```
+
 
 ## Config
 > SNB need a configuration file 'snb.config.js' and the file of "snb.config.js" is required.
@@ -62,7 +75,7 @@ snb.config.baseUrl = ''
 Modern browsers and Internet Explorer 8+.
 
 ## How To Use
-[wiki](https://github.com/cherislive/snb/wiki)
+View more usage methods in a [wiki](https://github.com/cherislive/snb/wiki).
 
 ## LICENSE
 
